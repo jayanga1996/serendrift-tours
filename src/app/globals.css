@@ -1,0 +1,144 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
+  --color-ink: #142226;
+  --color-lagoon: #0f4c5c;
+  --color-deep: #082f38;
+  --color-foam: #f6f1e8;
+  --color-sand: #e4d8c4;
+  --color-gold: #c4a15a;
+  --color-coral: #c4623d;
+  --color-mist: #5c6b70;
+  --color-paper: #fffdf8;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-foam);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: #c4a15a;
+  color: #142226;
+}
+
+.serif {
+  font-family: var(--font-serif);
+}
+
+.field {
+  width: 100%;
+  border-radius: 1rem;
+  border: 1px solid #e4d8c4;
+  background: white;
+  padding: 0.85rem 1rem;
+  color: #142226;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field:focus {
+  border-color: #0f4c5c;
+  box-shadow: 0 0 0 4px rgba(15, 76, 92, 0.12);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  border-radius: 999px;
+  padding: 0.85rem 1.35rem;
+  font-weight: 600;
+  line-height: 1;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-lagoon {
+  background: #0f4c5c;
+  color: #f6f1e8;
+}
+
+.btn-lagoon:hover {
+  background: #0c3e4b;
+}
+
+.btn-gold {
+  background: #c4a15a;
+  color: #142226;
+}
+
+.btn-gold:hover {
+  background: #d4b56e;
+}
+
+.btn-line {
+  border: 1px solid rgba(246, 241, 232, 0.45);
+  color: #f6f1e8;
+}
+
+.btn-line:hover {
+  background: rgba(246, 241, 232, 0.1);
+}
+
+.btn-ghost {
+  border: 1px solid #e4d8c4;
+  background: white;
+  color: #142226;
+}
+
+.kenburns {
+  animation: drift 22s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+.marquee-track {
+  animation: ticker 36s linear infinite;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .kenburns,
+  .marquee-track {
+    animation: none;
+  }
+
+  .btn:hover {
+    transform: none;
+  }
+}
