@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { readBookings, readContent } from "@/lib/store";
 
-export default function AdminHome() {
-  const content = readContent();
-  const bookings = readBookings();
+export default async function AdminHome() {
+  const content = await readContent();
+  const bookings = await readBookings();
   const fresh = bookings.filter((booking) => booking.status === "new");
   const cards = [
     [String(fresh.length), "New guest requests", "/admin/bookings"],

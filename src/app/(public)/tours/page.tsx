@@ -11,7 +11,7 @@ export default async function ToursPage({
   searchParams: Promise<{ type?: string; place?: string }>;
 }) {
   const params = await searchParams;
-  const content = publicContent();
+  const content = await publicContent();
   return (
     <>
       <PageHero

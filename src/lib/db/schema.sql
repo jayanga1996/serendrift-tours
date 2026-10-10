@@ -1,0 +1,124 @@
+CREATE TABLE IF NOT EXISTS site_profile (
+  id TINYINT NOT NULL PRIMARY KEY,
+  name VARCHAR(120) NOT NULL,
+  tagline VARCHAR(255) NOT NULL,
+  phone VARCHAR(40) NOT NULL,
+  email VARCHAR(120) NOT NULL,
+  address VARCHAR(255) NOT NULL,
+  hours VARCHAR(120) NOT NULL,
+  whatsapp VARCHAR(40) NOT NULL,
+  instagram VARCHAR(255) NOT NULL,
+  facebook VARCHAR(255) NOT NULL,
+  about_heading VARCHAR(255) NOT NULL,
+  about_lead TEXT NOT NULL,
+  about_body MEDIUMTEXT NOT NULL,
+  about_image VARCHAR(1000) NOT NULL,
+  ticker JSON NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS hero_slides (
+  id VARCHAR(64) NOT NULL PRIMARY KEY,
+  sort_order INT NOT NULL,
+  eyebrow VARCHAR(120) NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  text TEXT NOT NULL,
+  image VARCHAR(1000) NOT NULL,
+  cta VARCHAR(120) NOT NULL,
+  href VARCHAR(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS deals (
+  id VARCHAR(64) NOT NULL PRIMARY KEY,
+  sort_order INT NOT NULL,
+  kicker VARCHAR(120) NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  image VARCHAR(1000) NOT NULL,
+  href VARCHAR(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS destinations (
+  id VARCHAR(64) NOT NULL PRIMARY KEY,
+  sort_order INT NOT NULL,
+  slug VARCHAR(160) NOT NULL,
+  name VARCHAR(160) NOT NULL,
+  province VARCHAR(120) NOT NULL,
+  summary TEXT NOT NULL,
+  image VARCHAR(1000) NOT NULL,
+  featured TINYINT(1) NOT NULL DEFAULT 0,
+  UNIQUE KEY destinations_slug (slug)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS stays (
+  id VARCHAR(64) NOT NULL PRIMARY KEY,
+  sort_order INT NOT NULL,
+  name VARCHAR(160) NOT NULL,
+  area VARCHAR(120) NOT NULL,
+  style VARCHAR(120) NOT NULL,
+  summary TEXT NOT NULL,
+  image VARCHAR(1000) NOT NULL,
+  amenities JSON NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS testimonials (
+  id VARCHAR(64) NOT NULL PRIMARY KEY,
+  sort_order INT NOT NULL,
+  name VARCHAR(120) NOT NULL,
+  guest_from VARCHAR(120) NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  quote TEXT NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS stats (
+  id VARCHAR(64) NOT NULL PRIMARY KEY,
+  sort_order INT NOT NULL,
+  value VARCHAR(40) NOT NULL,
+  label VARCHAR(160) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS reasons (
+  id VARCHAR(64) NOT NULL PRIMARY KEY,
+  sort_order INT NOT NULL,
+  title VARCHAR(160) NOT NULL,
+  text TEXT NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS tours (
+  id VARCHAR(64) NOT NULL PRIMARY KEY,
+  sort_order INT NOT NULL,
+  slug VARCHAR(160) NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  type ENUM('day', 'multi') NOT NULL,
+  days INT NOT NULL,
+  price_from DECIMAL(10, 2) NOT NULL,
+  places JSON NOT NULL,
+  location VARCHAR(160) NOT NULL,
+  summary TEXT NOT NULL,
+  description MEDIUMTEXT NOT NULL,
+  image VARCHAR(1000) NOT NULL,
+  gallery JSON NOT NULL,
+  highlights JSON NOT NULL,
+  itinerary JSON NOT NULL,
+  includes JSON NOT NULL,
+  featured TINYINT(1) NOT NULL DEFAULT 0,
+  popular TINYINT(1) NOT NULL DEFAULT 0,
+  active TINYINT(1) NOT NULL DEFAULT 1,
+  UNIQUE KEY tours_slug (slug)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS bookings (
+  id CHAR(36) NOT NULL PRIMARY KEY,
+  created_at DATETIME(3) NOT NULL,
+  name VARCHAR(80) NOT NULL,
+  email VARCHAR(120) NOT NULL,
+  phone VARCHAR(40) NOT NULL,
+  country VARCHAR(80) NOT NULL,
+  tour_slug VARCHAR(160) NOT NULL,
+  tour_title VARCHAR(255) NOT NULL,
+  travel_date VARCHAR(20) NOT NULL,
+  guests INT NOT NULL,
+  message TEXT NOT NULL,
+  status ENUM('new', 'contacted', 'confirmed', 'closed') NOT NULL,
+  note TEXT NOT NULL,
+  KEY bookings_created (created_at),
+  KEY bookings_status (status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

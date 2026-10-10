@@ -5,8 +5,8 @@ import { publicContent } from "@/lib/store";
 
 export const metadata: Metadata = { title: "Destinations" };
 
-export default function DestinationsPage() {
-  const content = publicContent();
+export default async function DestinationsPage() {
+  const content = await publicContent();
   const provinces = [...new Set(content.destinations.map((place) => place.province))];
   return (
     <>

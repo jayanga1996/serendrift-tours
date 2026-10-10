@@ -5,8 +5,8 @@ import { publicContent } from "@/lib/store";
 
 export const metadata: Metadata = { title: "Stays" };
 
-export default function StaysPage() {
-  const content = publicContent();
+export default async function StaysPage() {
+  const content = await publicContent();
   return (
     <>
       <PageHero

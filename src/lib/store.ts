@@ -1,54 +1,43 @@
-import fs from "fs";
-import path from "path";
-import { defaultContent } from "./seed";
-import type { Booking, SiteContent } from "./types";
+import { insertBooking, listBookings, removeBooking, updateBooking } from "./db/bookings";
+import { readSiteContent, saveSiteContent } from "./db/content";
+import { ensureDatabase } from "./db/ensure";
+import type { Booking, BookingStatus, SiteContent } from "./types";
 
-const dataDir = path.join(process.cwd(), "data");
-const contentFile = path.join(dataDir, "content.json");
-const bookingsFile = path.join(dataDir, "bookings.json");
-
-function writeJson(file: string, data: unknown) {
-  fs.mkdirSync(dataDir, { recursive: true });
-  const tmp = `${file}.tmp`;
-  fs.writeFileSync(tmp, JSON.stringify(data, null, 2));
-  fs.renameSync(tmp, file);
+export async function readContent(): Promise<SiteContent> {
+  await ensureDatabase();
+  return readSiteContent();
 }
 
-function ensureContent() {
-  if (!fs.existsSync(contentFile)) writeJson(contentFile, defaultContent);
-}
-
-function ensureBookings() {
-  if (!fs.existsSync(bookingsFile)) writeJson(bookingsFile, []);
-}
-
-export function readContent(): SiteContent {
-  ensureContent();
-  const raw = fs.readFileSync(contentFile, "utf8");
-  return JSON.parse(raw) as SiteContent;
-}
-
-export function writeContent(content: SiteContent) {
-  writeJson(contentFile, content);
+export async function writeContent(content: SiteContent) {
+  await ensureDatabase();
+  await saveSiteContent(content);
   return content;
 }
 
-export function readBookings(): Booking[] {
-  ensureBookings();
-  const raw = fs.readFileSync(bookingsFile, "utf8");
-  const bookings = JSON.parse(raw) as Booking[];
-  return bookings.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
-}
-
-export function writeBookings(bookings: Booking[]) {
-  writeJson(bookingsFile, bookings);
-  return bookings;
-}
-
-export function publicContent() {
-  const content = readContent();
+export async function publicContent() {
+  const content = await readContent();
   return {
     ...content,
     tours: content.tours.filter((tour) => tour.active),
   };
+}
+
+export async function readBookings() {
+  await ensureDatabase();
+  return listBookings();
+}
+
+export async function createBooking(booking: Booking) {
+  await ensureDatabase();
+  await insertBooking(booking);
+}
+
+export async function patchBooking(id: string, patch: { status?: BookingStatus; note?: string }) {
+  await ensureDatabase();
+  return updateBooking(id, patch);
+}
+
+export async function deleteBooking(id: string) {
+  await ensureDatabase();
+  return removeBooking(id);
 }

@@ -5,8 +5,8 @@ import { publicContent } from "@/lib/store";
 
 export const metadata: Metadata = { title: "About" };
 
-export default function AboutPage() {
-  const content = publicContent();
+export default async function AboutPage() {
+  const content = await publicContent();
   return (
     <>
       <PageHero

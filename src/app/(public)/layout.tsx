@@ -5,8 +5,8 @@ import { publicContent } from "@/lib/store";
 
 export const dynamic = "force-dynamic";
 
-export default function PublicLayout({ children }: { children: React.ReactNode }) {
-  const content = publicContent();
+export default async function PublicLayout({ children }: { children: React.ReactNode }) {
+  const content = await publicContent();
   return (
     <>
       <Header

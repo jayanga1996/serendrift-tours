@@ -6,8 +6,8 @@ import { TourCard } from "@/components/site/TourCard";
 import { money } from "@/lib/format";
 import { publicContent } from "@/lib/store";
 
-export default function HomePage() {
-  const content = publicContent();
+export default async function HomePage() {
+  const content = await publicContent();
   const multi = content.tours.filter((tour) => tour.type === "multi" && tour.popular);
   const experiences = content.tours.filter((tour) => tour.featured).slice(0, 4);
   const places = content.destinations.filter((place) => place.featured).slice(0, 5);

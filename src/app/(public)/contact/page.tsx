@@ -5,8 +5,8 @@ import { publicContent } from "@/lib/store";
 
 export const metadata: Metadata = { title: "Contact" };
 
-export default function ContactPage() {
-  const content = publicContent();
+export default async function ContactPage() {
+  const content = await publicContent();
   const { brand } = content;
   return (
     <>

@@ -2,8 +2,8 @@ import Link from "next/link";
 import { money } from "@/lib/format";
 import { readContent } from "@/lib/store";
 
-export default function AdminToursPage() {
-  const tours = readContent().tours;
+export default async function AdminToursPage() {
+  const tours = (await readContent()).tours;
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4">

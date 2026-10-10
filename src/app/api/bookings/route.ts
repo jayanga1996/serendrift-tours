@@ -1,13 +1,16 @@
 import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 import { clip, requireAdmin } from "@/lib/guard";
-import { readBookings, readContent, writeBookings } from "@/lib/store";
+import { createBooking, readBookings, readContent } from "@/lib/store";
 import type { Booking } from "@/lib/types";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   const { response } = await requireAdmin();
   if (response) return response;
-  return NextResponse.json(readBookings());
+  return NextResponse.json(await readBookings());
 }
 
 export async function POST(request: Request) {
@@ -31,7 +34,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const tour = readContent().tours.find((item) => item.slug === tourSlug);
+  const tour = (await readContent()).tours.find((item) => item.slug === tourSlug);
   const booking: Booking = {
     id: randomUUID(),
     createdAt: new Date().toISOString(),
@@ -48,8 +51,6 @@ export async function POST(request: Request) {
     note: "",
   };
 
-  const bookings = readBookings();
-  bookings.unshift(booking);
-  writeBookings(bookings);
+  await createBooking(booking);
   return NextResponse.json({ ok: true });
 }

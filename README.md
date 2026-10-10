@@ -26,4 +26,31 @@ From the desk you can:
 - Replace homepage slides, destination photos, stays, and the about story
 - Read guest registrations from the website form, and mark them contacted or confirmed
 
-Uploaded images are stored in `public/uploads`. Tour and page text is stored in `data/content.json`. Guest requests are stored in `data/bookings.json`.
+Uploaded images are stored in `public/uploads`. Tours, page text, and guest requests are stored in MySQL.
+
+## MySQL
+
+Copy `.env.example` to `.env.local` and set the MySQL user, password, and database name. Then create the tables and load the sample journeys:
+
+```bash
+npm run db:setup
+```
+
+The database name defaults to `serendrift`. The first setup writes the sample site into these tables: `site_profile`, `hero_slides`, `deals`, `destinations`, `stays`, `testimonials`, `stats`, `reasons`, `tours`, and `bookings`.
+
+## API
+
+| Method | Path | Who |
+| --- | --- | --- |
+| GET | `/api/health` | Anyone. Checks the MySQL connection. |
+| GET | `/api/content` | Guests see published tours. A signed-in planner also sees hidden tours. |
+| PUT | `/api/content` | Planner. Saves the whole website. |
+| GET | `/api/tours` | Anyone. Optional `?type=day` or `?type=multi`, and `?place=sigiriya`. |
+| GET | `/api/tours/[slug]` | Anyone. |
+| GET | `/api/destinations` | Anyone. |
+| GET | `/api/destinations/[slug]` | Anyone. Includes the tours for that place. |
+| GET | `/api/stays` | Anyone. |
+| POST | `/api/bookings` | Anyone. Saves a guest registration. |
+| GET | `/api/bookings` | Planner. |
+| PATCH | `/api/bookings/[id]` | Planner. Updates status or the private note. |
+| DELETE | `/api/bookings/[id]` | Planner. |

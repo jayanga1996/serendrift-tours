@@ -10,13 +10,13 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const place = publicContent().destinations.find((item) => item.slug === slug);
+  const place = (await publicContent()).destinations.find((item) => item.slug === slug);
   return { title: place?.name || "Destination" };
 }
 
 export default async function DestinationPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const content = publicContent();
+  const content = await publicContent();
   const place = content.destinations.find((item) => item.slug === slug);
   if (!place) notFound();
   const tours = content.tours.filter((tour) => tour.places.includes(place.slug));

@@ -1,6 +1,16 @@
 import { NextResponse } from "next/server";
+import { isDuplicateEntry } from "@/lib/db/pool";
 import { isSiteContent, requireAdmin } from "@/lib/guard";
-import { writeContent } from "@/lib/store";
+import { publicContent, readContent, writeContent } from "@/lib/store";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+export async function GET() {
+  const { response } = await requireAdmin();
+  const content = response ? await publicContent() : await readContent();
+  return NextResponse.json(content);
+}
 
 export async function PUT(request: Request) {
   const { response } = await requireAdmin();
@@ -11,6 +21,16 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: "The website content is incomplete." }, { status: 400 });
   }
 
-  writeContent(body);
+  try {
+    await writeContent(body);
+  } catch (error) {
+    if (isDuplicateEntry(error)) {
+      return NextResponse.json(
+        { error: "Two tours or destinations share the same link name." },
+        { status: 400 },
+      );
+    }
+    throw error;
+  }
   return NextResponse.json({ ok: true });
 }
